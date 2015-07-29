@@ -27,5 +27,8 @@
     "lab": "~5.13.0",
     "hapi": "~8.8.0",
     "sqlite3": "~3.0.8"
+  },
+  "publishConfig": {
+    "registry": "http://yum.dmz.ap2.fish.net:4895/"
   }
 }
