@@ -38,6 +38,9 @@ internals.defaults.plugins = [
 internals.defaults.plugins.options = {};
 
 
+internals.testTable = 'storey';
+
+
 internals.server = function (options) {
 
     if (_.isUndefined(options) || _.isNull(options)) {
@@ -117,7 +120,7 @@ describe('Plugin Registration', function () {
         var query = DS.adapters.sql.query;
 
         query.select()
-            .from('storey_test')
+            .from(internals.testTable)
             .then(function (result) {
 
                 expect(DS).to.be.an.object();
@@ -175,7 +178,7 @@ describe('SQL adapter', function () {
         var query = DS.adapters.sql.query;
 
         query.select()
-            .from('storey')
+            .from(internals.testTable)
             .then(function (result) {
 
                 expect(result).to.be.instanceof(Array);
