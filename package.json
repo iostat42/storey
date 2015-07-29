@@ -1,6 +1,6 @@
 {
   "name": "sd-storey",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Wrapper object for js-data and js-dataschema",
   "main": "index.js",
   "scripts": {
