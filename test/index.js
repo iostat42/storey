@@ -72,7 +72,7 @@ describe('Plugin Registration', function () {
     });
 
 
-    it('handles empty', function (done) {
+    it('handles undefined options', function (done) {
 
         var server = new Hapi.Server();
 
@@ -80,7 +80,7 @@ describe('Plugin Registration', function () {
 
         // Prepare an empty adapter config
 
-        emptyConfig.plugins[0].options = {};
+        emptyConfig.plugins[0].options = undefined;
 
         server.register(emptyConfig.plugins, {}, function (err) {
 
