@@ -175,7 +175,7 @@ describe('SQL adapter', function () {
         var query = DS.adapters.sql.query;
 
         query.select()
-            .from('storey_test')
+            .from('storey')
             .then(function (result) {
 
                 expect(result).to.be.instanceof(Array);

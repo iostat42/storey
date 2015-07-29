@@ -1,4 +1,4 @@
-var seedTable = 'storey_test';
+var seedTable = 'storey';
 
 exports.seed = function (knex, Promise) {
 
