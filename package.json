@@ -1,7 +1,7 @@
 {
-  "name": "sd-storey",
+  "name": "storey",
   "version": "0.0.5",
-  "description": "Wrapper object for js-data and js-dataschema",
+  "description": "Hapi plugin for js-data",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/lab/bin/lab -c -L",
@@ -9,11 +9,11 @@
   },
   "keywords": [
     "js-data",
-    "js-data-schema",
     "storey",
-    "storey"
+    "hapi",
+    "plugin"
   ],
-  "author": "goby",
+  "author": "iostat42 <iostat42@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "js-data": "~2.2.2",
@@ -27,8 +27,5 @@
     "lab": "~5.13.0",
     "hapi": "~8.8.0",
     "sqlite3": "~3.0.8"
-  },
-  "publishConfig": {
-    "registry": "http://yum.dmz.ap2.fish.net:4895/"
   }
 }

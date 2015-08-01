@@ -1,12 +1,12 @@
-# sd-storey
+# storey
 
-SD hapi plugin that wraps the js-data and adapter modules.  See www.js-data.io for more details.
+Hapi plugin for js-data and adapter modules.  See www.js-data.io for more details.
 
 
 ## Install
 
 ```bash
-$ npm install sd-storey
+$ npm install storey
 ```
 
 
