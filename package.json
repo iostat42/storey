@@ -16,11 +16,11 @@
   "author": "iostat42 <iostat42@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "js-data": "~2.2.2",
-    "js-data-sql": "~0.9.2",
-    "lodash": "~3.10.0",
+    "async": "^1.4.2",
     "bluebird": "~2.9.34",
-    "async": "~1.4.0"
+    "js-data": "^2.3.0",
+    "js-data-sql": "~0.9.2",
+    "lodash": "^3.10.1"
   },
   "devDependencies": {
     "code": "~1.4.1",
