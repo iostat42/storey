@@ -1,26 +1,28 @@
+'use strict';
+
 // Load modules
 
-var _ = require('lodash');
-var Lab = require('lab');
-var Code = require('code');
-var Hapi = require('hapi');
-var Plugin = require('..');
+const _ = require('lodash');
+const Lab = require('lab');
+const Code = require('code');
+const Hapi = require('hapi');
+const Plugin = require('..');
 
 
 // Test shortcuts
 
-var lab = exports.lab = Lab.script();
-var describe = lab.experiment;
-var it = lab.test;
-var expect = Code.expect;
-var before = lab.before;
-var beforeEach = lab.beforeEach;
-var after = lab.after;
+const lab = exports.lab = Lab.script();
+const describe = lab.experiment;
+const it = lab.test;
+const expect = Code.expect;
+const before = lab.before;
+// const beforeEach = lab.beforeEach;
+// const after = lab.after;
 
 
 // Declare internals
 
-var internals = {};
+const internals = {};
 
 internals.Pkg = Plugin.register.attributes.pkg;
 
@@ -53,18 +55,18 @@ internals.server = function (options) {
 
 // Merge test config with defaults
 
-var Config = internals.defaults;
+const Config = internals.defaults;
 
 
 // Tests
 
-describe('Plugin Registration', function () {
+describe('Plugin Registration', () => {
 
-    it('registers successfully', function (done) {
+    it('registers successfully', (done) => {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
 
-        server.register(Config.plugins, {}, function (err) {
+        server.register(Config.plugins, {}, (err) => {
 
             expect(err).to.not.exist();
             done();
@@ -72,17 +74,17 @@ describe('Plugin Registration', function () {
     });
 
 
-    it('handles undefined options', function (done) {
+    it('handles undefined options', (done) => {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
 
-        var emptyConfig = _.cloneDeep(Config);
+        const emptyConfig = _.cloneDeep(Config);
 
         // Prepare an empty adapter config
 
         emptyConfig.plugins[0].options = undefined;
 
-        server.register(emptyConfig.plugins, {}, function (err) {
+        server.register(emptyConfig.plugins, {}, (err) => {
 
             expect(err).to.not.exist();
             done();
@@ -90,11 +92,11 @@ describe('Plugin Registration', function () {
     });
 
 
-    it('handles errors', function (done) {
+    it('handles errors', (done) => {
 
-        var server = new Hapi.Server();
+        const server = new Hapi.Server();
 
-        var badConfig = _.cloneDeep(Config);
+        const badConfig = _.cloneDeep(Config);
 
         // Prepare a bad adapter config
 
@@ -103,9 +105,7 @@ describe('Plugin Registration', function () {
         badConfig.plugins[0].options.adapters[0].registerOptions = {};
         badConfig.plugins[0].options.adapters[0].options = {};
 
-        server.register(badConfig.plugins, {}, function (err) {
-
-
+        server.register(badConfig.plugins, {}, (err) => {
 
             expect(err).to.exist();
             done();
@@ -113,22 +113,22 @@ describe('Plugin Registration', function () {
     });
 
 
-    it('can be used as a module', function (done) {
+    it('can be used as a module', (done) => {
 
-        var DS = new Plugin.DS();
+        const DS = new Plugin.DS();
 
-        var query = DS.adapters.sql.query;
+        const query = DS.adapters.sql.query;
 
         query.select()
             .from(internals.testTable)
-            .then(function (result) {
+            .then((result) => {
 
                 expect(DS).to.be.an.object();
                 expect(result).to.be.instanceof(Array);
 
                 done();
             })
-            .catch(function (err) {
+            .catch((err) => {
 
                 throw err;
             });
@@ -136,36 +136,40 @@ describe('Plugin Registration', function () {
 });
 
 
-describe('SQL adapter', function () {
+describe('SQL adapter', () => {
 
-    var server = null;
-    var DS = null;
+    let server = null;
+    let DS = null;
 
-    before(function (done) {
+    before((done) => {
 
         server = internals.server();
 
-        server.register(Config.plugins, Config.plugins.options, function (err) {
+        server.register(Config.plugins, Config.plugins.options, (err) => {
+
+            if (err) {
+                throw err;
+            }
 
             DS = server.plugins[internals.Pkg.name].DS;
 
-            var migrate = DS.adapters.sql.query.migrate;
-            var seed = DS.adapters.sql.query.seed;
+            const migrate = DS.adapters.sql.query.migrate;
+            const seed = DS.adapters.sql.query.seed;
 
             migrate.rollback()
-                .then(function () {
+                .then(() => {
 
                     return migrate.latest();
                 })
-                .then(function () {
+                .then(() => {
 
                     return seed.run();
                 })
-                .then(function () {
+                .then(() => {
 
                     return done();
                 })
-                .catch(function (err) {
+                .catch((err) => {
 
                     throw err;
                 });
@@ -173,19 +177,19 @@ describe('SQL adapter', function () {
     });
 
 
-    it('executes a query', function (done) {
+    it('executes a query', (done) => {
 
-        var query = DS.adapters.sql.query;
+        const query = DS.adapters.sql.query;
 
         query.select()
             .from(internals.testTable)
-            .then(function (result) {
+            .then((result) => {
 
                 expect(result).to.be.instanceof(Array);
 
                 done();
             })
-            .catch(function (err) {
+            .catch((err) => {
 
                 throw err;
             });
