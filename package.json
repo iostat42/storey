@@ -1,6 +1,6 @@
 {
   "name": "storey",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Hapi plugin for js-data",
   "main": "index.js",
   "scripts": {
