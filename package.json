@@ -18,15 +18,17 @@
   "dependencies": {
     "async": "1.5.x",
     "bluebird": "3.1.x",
+    "hoek": "3.0.x",
     "js-data": "2.8.x",
-    "js-data-sql": "0.11.x",
-    "knex": "0.9.x",
     "lodash": "3.10.x"
   },
   "devDependencies": {
+    "chance": "1.0.x",
     "code": "2.1.x",
     "hapi": "12.1.x",
     "lab": "8.0.x",
-    "sqlite3": "3.1.x"
+    "sqlite3": "3.1.x",
+    "js-data-sql": "0.11.x",
+    "knex": "0.9.x"
   }
 }

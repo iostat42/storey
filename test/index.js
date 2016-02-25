@@ -1,16 +1,14 @@
 'use strict';
 
 // Load modules
-
 const _ = require('lodash');
 const Lab = require('lab');
 const Code = require('code');
 const Hapi = require('hapi');
+const Config = require('./config');
 const Plugin = require('..');
 
-
 // Test shortcuts
-
 const lab = exports.lab = Lab.script();
 const describe = lab.experiment;
 const it = lab.test;
@@ -21,27 +19,9 @@ const before = lab.before;
 
 
 // Declare internals
-
 const internals = {};
 
-internals.Pkg = Plugin.register.attributes.pkg;
-
-
 internals.defaults = {};
-
-
-internals.defaults.plugins = [
-    {
-        register: Plugin,
-        options: {}
-    }
-];
-
-internals.defaults.plugins.options = {};
-
-
-internals.testTable = 'storey';
-
 
 internals.server = function (options) {
 
@@ -52,14 +32,7 @@ internals.server = function (options) {
     return new Hapi.Server(options);
 };
 
-
-// Merge test config with defaults
-
-const Config = internals.defaults;
-
-
 // Tests
-
 describe('Plugin Registration', () => {
 
     it('registers successfully', (done) => {
@@ -73,7 +46,6 @@ describe('Plugin Registration', () => {
         });
     });
 
-
     it('handles undefined options', (done) => {
 
         const server = new Hapi.Server();
@@ -81,16 +53,30 @@ describe('Plugin Registration', () => {
         const emptyConfig = _.cloneDeep(Config);
 
         // Prepare an empty adapter config
-
         emptyConfig.plugins[0].options = undefined;
 
         server.register(emptyConfig.plugins, {}, (err) => {
 
-            expect(err).to.not.exist();
+            expect(err).to.exist();
             done();
         });
     });
 
+    it('handles empty options', (done) => {
+
+        const server = new Hapi.Server();
+
+        const emptyConfig = _.cloneDeep(Config);
+
+        // Prepare an empty adapter config
+        emptyConfig.plugins[0].options = {};
+
+        server.register(emptyConfig.plugins, {}, (err) => {
+
+            expect(err).to.exist();
+            done();
+        });
+    });
 
     it('handles errors', (done) => {
 
@@ -99,7 +85,6 @@ describe('Plugin Registration', () => {
         const badConfig = _.cloneDeep(Config);
 
         // Prepare a bad adapter config
-
         badConfig.plugins[0].options.adapters[0].name = 'nosql';
         badConfig.plugins[0].options.adapters[0].type = 'DSBadAdapter';
         badConfig.plugins[0].options.adapters[0].registerOptions = {};
@@ -112,20 +97,18 @@ describe('Plugin Registration', () => {
         });
     });
 
-
     it('can be used as a module', (done) => {
 
-        const DS = new Plugin.DS();
+        const DS = new Plugin.DS(Config.plugins[0].options);
 
         const query = DS.adapters.sql.query;
 
         query.select()
-            .from(internals.testTable)
+            .from(Config.testTable)
             .then((result) => {
 
                 expect(DS).to.be.an.object();
                 expect(result).to.be.instanceof(Array);
-
                 done();
             })
             .catch((err) => {
@@ -134,7 +117,6 @@ describe('Plugin Registration', () => {
             });
     });
 });
-
 
 describe('SQL adapter', () => {
 
@@ -145,13 +127,15 @@ describe('SQL adapter', () => {
 
         server = internals.server();
 
-        server.register(Config.plugins, Config.plugins.options, (err) => {
+        const opts = {};
+
+        server.register(Config.plugins, opts, (err) => {
 
             if (err) {
                 throw err;
             }
 
-            DS = server.plugins[internals.Pkg.name].DS;
+            DS = server.plugins[Config.pkg.name].DS;
 
             const migrate = DS.adapters.sql.query.migrate;
             const seed = DS.adapters.sql.query.seed;
@@ -176,23 +160,20 @@ describe('SQL adapter', () => {
         });
     });
 
-
     it('executes a query', (done) => {
 
         const query = DS.adapters.sql.query;
 
         query.select()
-            .from(internals.testTable)
+            .from(Config.testTable)
             .then((result) => {
 
                 expect(result).to.be.instanceof(Array);
-
                 done();
             })
             .catch((err) => {
 
                 throw err;
             });
-
     });
 });
